@@ -13,6 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         // title: 'Cultura Game',
         theme: appTheme(),
-        home: HomePage(title: 'CulturaGame'));
+        home: HomePage());
   }
 }

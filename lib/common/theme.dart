@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 ThemeData appTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: AppColors.grey,
+    scaffoldBackgroundColor: AppColors.yellow,
     brightness: Brightness.dark,
     primaryColor: AppColors.yellow,
     accentColor: AppColors.grey,

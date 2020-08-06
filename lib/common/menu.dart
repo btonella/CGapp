@@ -1,20 +1,27 @@
 import 'package:CulturaGame/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-Widget CGAppBar(BuildContext context, {String title}) {
+Widget CGAppBar(BuildContext context, {bool hasLogo}) {
   return AppBar(
-    // backgroundColor: Colors.black45,
-    // flexibleSpace: Container(
-    //   height: 40,
-    // ),
+    backgroundColor: Colors.transparent,
     toolbarOpacity: 1,
     elevation: 0,
-    title: Text(
-      title ?? '',
-      style: TextStyle(fontFamily: 'ArcadePix', color: Colors.black),
-    ),
+    title: hasLogo
+        ? Image.asset(
+            'assets/logo.png',
+            height: 35,
+            alignment: Alignment.center,
+          )
+        : Container(),
     centerTitle: true,
-    actions: <Widget>[],
+    actions: <Widget>[
+      Container(
+          margin: EdgeInsets.all(5),
+          child: Icon(
+            Icons.search,
+            size: 25,
+          ))
+    ],
   );
 }
 
