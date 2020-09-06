@@ -5,7 +5,7 @@ import 'package:CulturaGame/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class VideosPage extends StatefulWidget {
-  bool hasLogo;
+  final bool hasLogo;
 
   VideosPage({this.hasLogo = false});
 

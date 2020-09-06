@@ -1,10 +1,9 @@
 import 'package:CulturaGame/common/theme.dart';
-import 'package:CulturaGame/pages/news.dart';
-import 'package:CulturaGame/pages/videos.dart';
-import 'package:CulturaGame/router.dart';
 import 'package:CulturaGame/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
+// ignore: non_constant_identifier_names
 Widget CGAppBar(BuildContext context, {bool hasLogo}) {
   return AppBar(
     backgroundColor: Colors.transparent,
@@ -30,7 +29,7 @@ Widget CGAppBar(BuildContext context, {bool hasLogo}) {
 }
 
 class BottomMenu extends StatefulWidget {
-  int currentIndex;
+  final int currentIndex;
   BottomMenu(this.currentIndex);
   @override
   _BottomMenuState createState() => _BottomMenuState();
@@ -38,7 +37,7 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   int _selectedIndex;
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  // final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   String getRouteName(index) {
     String name = '/';
@@ -134,55 +133,106 @@ class _BottomMenuState extends State<BottomMenu> {
   }
 }
 
-Widget SideMenu(BuildContext context) {
-  return Drawer(
-    child: Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10),
-            color: AppColors.yellow,
-            height: MediaQuery.of(context).size.height * 0.2,
+Widget sideMenuIcon(BuildContext context, String name, String icon, {bool isLast}) {
+  return Container(
+    padding: EdgeInsets.all(10),
+    child: Column(
+      children: [
+        GestureDetector(
+          onTap: () {},
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Image.asset(
+                  'assets/icons/icon_$icon.png',
+                  height: 25,
+                ),
+              ),
+              Text(
+                name,
+                style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 16, color: AppColors.grey),
+              ),
+            ],
           ),
-          Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Games',
-                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 30),
-              )),
-          Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Cinema',
-                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 30),
-              )),
-          Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Séries',
-                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 30),
-              )),
-          Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Livros e HQs',
-                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 30),
-              )),
-          Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Eventos',
-                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 30),
-              )),
-          Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Loja',
-                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 30),
-              )),
-        ],
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Divider(
+            height: 1,
+            color: AppColors.grey.withOpacity(0.3),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+// ignore: non_constant_identifier_names
+Widget SideMenu(BuildContext context) {
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.55,
+    child: ClipRRect(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(25),
+        bottomRight: Radius.circular(25),
+      ),
+      child: Drawer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: EdgeInsets.only(bottom: 10),
+                height: MediaQuery.of(context).size.height * 0.2,
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/logo-G.png',
+                  height: 60,
+                )),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  sideMenuIcon(context, 'Games', 'games'),
+                  sideMenuIcon(context, 'Cinema', 'movies'),
+                  sideMenuIcon(context, 'Séries', 'series'),
+                  sideMenuIcon(context, 'Livros e HQs', 'books'),
+                  sideMenuIcon(context, 'Eventos', 'events'),
+                  sideMenuIcon(context, 'Loja', 'shop'),
+                ],
+              ),
+            ),
+            Spacer(),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  Container(
+                    height: 20,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.grey,
+                        )),
+                    child: Icon(
+                      FlutterIcons.person_outline_mdi,
+                      size: 18,
+                      color: AppColors.grey,
+                    ),
+                  ),
+                  Spacer(),
+                  Icon(
+                    FlutterIcons.setting_ant,
+                    size: 20,
+                    color: AppColors.grey,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     ),
   );
