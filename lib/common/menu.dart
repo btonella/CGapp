@@ -151,7 +151,7 @@ Widget sideMenuIcon(BuildContext context, String name, String icon, {bool isLast
               ),
               Text(
                 name,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 16, color: AppColors.grey),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 16, color: AppColors.grey,),
               ),
             ],
           ),
