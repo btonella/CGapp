@@ -381,7 +381,7 @@ Widget sidePageTopBar(BuildContext context,
               child: Text(
                 name.toUpperCase(),
                 style: appTheme().textTheme.bodyText1.copyWith(
-                      fontSize: 32,
+                      fontSize: 28,
                       fontWeight: FontWeight.w700,
                     ),
               ),
@@ -391,9 +391,9 @@ Widget sidePageTopBar(BuildContext context,
             Container(
               child: Image.asset(
                 'assets/icons/icon_${icon}_big.png',
-                height: 100,
+                height: 60,
               ),
-              // margin: EdgeInsets.only(right: 30),
+              margin: EdgeInsets.only(right: 30),
             ),
           ],
         ),
