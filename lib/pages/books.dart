@@ -11,7 +11,7 @@ class _BooksPageState extends State<BooksPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideMenu(context),
-      bottomNavigationBar: BottomMenu(0),
+      bottomNavigationBar: BottomMenu(0, isInactive: true),
       body: sidePageTopBar(
         context,
         hasLogo: true,
