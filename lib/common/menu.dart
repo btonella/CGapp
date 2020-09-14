@@ -1,10 +1,16 @@
 import 'package:CulturaGame/common/theme.dart';
+import 'package:CulturaGame/pages/books.dart';
+import 'package:CulturaGame/pages/events.dart';
+import 'package:CulturaGame/pages/games.dart';
+import 'package:CulturaGame/pages/movies.dart';
+import 'package:CulturaGame/pages/series.dart';
+import 'package:CulturaGame/pages/shop.dart';
 import 'package:CulturaGame/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 // ignore: non_constant_identifier_names
-Widget CGAppBar(BuildContext context, {bool hasLogo}) {
+Widget CGAppBar(BuildContext context, {bool hasLogo = false}) {
   return AppBar(
     backgroundColor: Colors.transparent,
     toolbarOpacity: 1,
@@ -30,7 +36,8 @@ Widget CGAppBar(BuildContext context, {bool hasLogo}) {
 
 class BottomMenu extends StatefulWidget {
   final int currentIndex;
-  BottomMenu(this.currentIndex);
+  final bool isInactive;
+  BottomMenu(this.currentIndex, {this.isInactive = false});
   @override
   _BottomMenuState createState() => _BottomMenuState();
 }
@@ -65,30 +72,31 @@ class _BottomMenuState extends State<BottomMenu> {
     Navigator.of(context).pushNamed(getRouteName(index));
   }
 
-  TextStyle getTheme(index) {
+  TextStyle getTheme(index, bool isInactive) {
+    if (isInactive) {
+      return appTheme()
+          .textTheme
+          .bodyText1
+          .copyWith(fontSize: 9, fontWeight: FontWeight.w500, color: AppColors.darkYellow);
+    }
     return appTheme().textTheme.bodyText1.copyWith(
         fontSize: 9, fontWeight: FontWeight.w500, color: _selectedIndex == index ? Colors.black : AppColors.darkYellow);
   }
 
-  String getImage(index, String name) {
-    if (_selectedIndex == index) {
-      return 'assets/icons/icon_${name}_black.png';
-    } else {
+  String getImage(index, String name, bool isInactive) {
+    if (isInactive) {
       return 'assets/icons/icon_$name.png';
+    } else {
+      if (_selectedIndex == index) {
+        return 'assets/icons/icon_${name}_black.png';
+      } else {
+        return 'assets/icons/icon_$name.png';
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //   return SafeArea(
-    //     child: Scaffold(
-    //       body: Navigator(key: _navigatorKey, onGenerateRoute: generateRoutes()),
-    //       bottomNavigationBar: _bottomMenu(),
-    //     ),
-    //   );
-    // }
-
-    // Widget _bottomMenu() {
     double logoSize = 35;
 
     return BottomNavigationBar(
@@ -106,40 +114,41 @@ class _BottomMenuState extends State<BottomMenu> {
       items: [
         BottomNavigationBarItem(
             icon: Image.asset(
-              getImage(0, 'news'),
+              getImage(0, 'news', widget.isInactive),
               height: logoSize,
             ),
-            title: Text('NOTICIAS', style: getTheme(0))),
+            title: Text('NOTICIAS', style: getTheme(0, widget.isInactive))),
         BottomNavigationBarItem(
             icon: Image.asset(
-              getImage(1, 'video'),
+              getImage(1, 'video', widget.isInactive),
               height: logoSize,
             ),
-            title: Text('VÍDEOS', style: getTheme(1))),
+            title: Text('VÍDEOS', style: getTheme(1, widget.isInactive))),
         BottomNavigationBarItem(
             icon: Image.asset(
-              getImage(2, 'podcast'),
+              getImage(2, 'podcast', widget.isInactive),
               height: logoSize,
             ),
-            title: Text('PODCAST', style: getTheme(2))),
+            title: Text('PODCAST', style: getTheme(2, widget.isInactive))),
         BottomNavigationBarItem(
             icon: Image.asset(
-              getImage(3, 'review'),
+              getImage(3, 'review', widget.isInactive),
               height: logoSize,
             ),
-            title: Text('REVIEWS', style: getTheme(3))),
+            title: Text('REVIEWS', style: getTheme(3, widget.isInactive))),
       ],
     );
   }
 }
 
-Widget sideMenuIcon(BuildContext context, String name, String icon, {bool isLast}) {
+Widget sideMenuIcon(BuildContext context,
+    {@required String name, @required String icon, @required Function onTap, bool isLast}) {
   return Container(
     padding: EdgeInsets.all(10),
     child: Column(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: onTap,
           child: Row(
             children: [
               Container(
@@ -151,7 +160,10 @@ Widget sideMenuIcon(BuildContext context, String name, String icon, {bool isLast
               ),
               Text(
                 name,
-                style: Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 16, color: AppColors.grey,),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      fontSize: 16,
+                      color: AppColors.grey,
+                    ),
               ),
             ],
           ),
@@ -194,12 +206,54 @@ Widget SideMenu(BuildContext context) {
               margin: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
-                  sideMenuIcon(context, 'Games', 'games'),
-                  sideMenuIcon(context, 'Cinema', 'movies'),
-                  sideMenuIcon(context, 'Séries', 'series'),
-                  sideMenuIcon(context, 'Livros e HQs', 'books'),
-                  sideMenuIcon(context, 'Eventos', 'events'),
-                  sideMenuIcon(context, 'Loja', 'shop'),
+                  sideMenuIcon(
+                    context,
+                    name: 'Games',
+                    icon: 'games',
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => GamesPage()));
+                    },
+                  ),
+                  sideMenuIcon(
+                    context,
+                    name: 'Cinema',
+                    icon: 'movies',
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MoviesPage()));
+                    },
+                  ),
+                  sideMenuIcon(
+                    context,
+                    name: 'Séries',
+                    icon: 'series',
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SeriesPage()));
+                    },
+                  ),
+                  sideMenuIcon(
+                    context,
+                    name: 'Livros e HQs',
+                    icon: 'books',
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => BooksPage()));
+                    },
+                  ),
+                  sideMenuIcon(
+                    context,
+                    name: 'Eventos',
+                    icon: 'events',
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => EventsPage()));
+                    },
+                  ),
+                  sideMenuIcon(
+                    context,
+                    name: 'Loja',
+                    icon: 'shop',
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ShopPage()));
+                    },
+                  ),
                 ],
               ),
             ),
@@ -235,5 +289,133 @@ Widget SideMenu(BuildContext context) {
         ),
       ),
     ),
+  );
+}
+
+Widget commonTopBar(BuildContext context, {@required List<Widget> content, bool hasLogo = false}) {
+  double distance = 150.0;
+
+  return Stack(
+    alignment: Alignment.topCenter,
+    children: <Widget>[
+      Container(
+        margin: EdgeInsets.only(top: 50),
+        height: 50,
+        decoration: BoxDecoration(
+          color: AppColors.yellow,
+        ),
+        alignment: Alignment.topCenter,
+        child: SizedBox.expand(
+          child: Image.asset(
+            'assets/logo-white.png',
+            alignment: Alignment.center,
+          ),
+        ),
+      ),
+      Positioned(
+        top: distance,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // children: [],
+          ),
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.only(top: distance + 30.0),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            children: content,
+          ),
+        ),
+      ),
+      CGAppBar(context, hasLogo: hasLogo)
+    ],
+  );
+}
+
+Widget sidePageTopBar(BuildContext context,
+    {@required List<Widget> content, @required String name, @required String icon, bool hasLogo = false}) {
+  double distance = 150.0;
+
+  return Stack(
+    alignment: Alignment.topCenter,
+    children: <Widget>[
+      Container(
+        color: Colors.white,
+        margin: EdgeInsets.only(top: distance - 20),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            children: content,
+          ),
+        ),
+      ),
+      CGAppBar(context, hasLogo: hasLogo),
+      Container(
+        margin: EdgeInsets.only(top: 75),
+        height: 80,
+        decoration: BoxDecoration(
+          color: AppColors.yellow,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
+        alignment: Alignment.topCenter,
+        child: Row(
+          children: [
+            Container(
+              child: Text(
+                name.toUpperCase(),
+                style: appTheme().textTheme.bodyText1.copyWith(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              margin: EdgeInsets.only(left: 50),
+            ),
+            Spacer(),
+            Container(
+              child: Image.asset(
+                'assets/icons/icon_${icon}_big.png',
+                height: 100,
+              ),
+              // margin: EdgeInsets.only(right: 30),
+            ),
+          ],
+        ),
+      ),
+      // Positioned(
+      //   top: distance,
+      //   child: Container(
+      //     width: MediaQuery.of(context).size.width,
+      //     height: MediaQuery.of(context).size.height,
+      //     decoration: BoxDecoration(
+      //       color: Colors.white,
+      //       // borderRadius: BorderRadius.only(
+      //       //   topLeft: Radius.circular(20),
+      //       //   topRight: Radius.circular(20),
+      //       // ),
+      //     ),
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       // children: [],
+      //     ),
+      //   ),
+      // ),
+    ],
   );
 }
