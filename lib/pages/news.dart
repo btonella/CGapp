@@ -1,7 +1,9 @@
+import 'package:CulturaGame/blocs/rss/all.dart';
 import 'package:CulturaGame/common/menu.dart';
 import 'package:CulturaGame/common/tags.dart';
 import 'package:CulturaGame/common/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewsPage extends StatefulWidget {
   final bool hasLogo;
@@ -13,6 +15,12 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<RSSBloc>(context).add(GetRSSEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
