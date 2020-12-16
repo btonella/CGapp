@@ -8,3 +8,10 @@ class GetRSSEvent extends RSSEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateRSSEvent extends RSSEvent {
+  UpdateRSSEvent();
+
+  @override
+  List<Object> get props => [];
+}
