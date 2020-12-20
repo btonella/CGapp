@@ -15,3 +15,19 @@ class UpdateRSSEvent extends RSSEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetEspecificRSSEvent extends RSSEvent {
+  final String categorie;
+  GetEspecificRSSEvent(this.categorie);
+
+  @override
+  List<Object> get props => [];
+}
+
+class UpdateEspecificRSSEvent extends RSSEvent {
+  final String categorie;
+  UpdateEspecificRSSEvent(this.categorie);
+
+  @override
+  List<Object> get props => [];
+}

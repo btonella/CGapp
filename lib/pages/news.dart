@@ -33,8 +33,29 @@ class _NewsPageState extends State<NewsPage> {
       bottomNavigationBar: BottomMenu(0),
       body: BlocBuilder<RSSBloc, RSSState>(
         builder: (BuildContext context, RSSState state) {
-          if (state.isLoading || state.data == null) {
-            return Center(child: CircularProgressIndicator());
+          if (state.isLoading || state.data == null || state.data['general'] == null) {
+            return commonTopBar(
+              context,
+              hasLogo: widget.hasLogo,
+              content: [
+                Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.yellow),
+                  ),
+                ),
+              ],
+            );
+          } else if (state.error != null) {
+            return commonTopBar(context, hasLogo: widget.hasLogo, content: [
+              Text(
+                state.error,
+                style: _textTheme.bodyText1.copyWith(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  // fontSize: 9,
+                ),
+              )
+            ]);
           } else {
             // print('RSS data: ' + state.data.toString());
             return SingleChildScrollView(
@@ -48,9 +69,9 @@ class _NewsPageState extends State<NewsPage> {
                     child: ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.all(5.0),
-                      itemCount: state.data.items.length,
+                      itemCount: state.data['general'].items.length,
                       itemBuilder: (BuildContext context, int index) {
-                        RssItem item = state.data.items[index];
+                        RssItem item = state.data['general'].items[index];
                         String pubDate = item.pubDate.split('+').first + 'GMT';
                         DateTime parsePubDate = HttpDate.parse(pubDate);
                         String timeDifference = DateTime.now().difference(parsePubDate).inDays > 1
@@ -75,7 +96,7 @@ class _NewsPageState extends State<NewsPage> {
                                 ).toList()
                               : [];
                           List<Widget> infos = [
-                            ...temp,
+                            ...temp.getRange(0, 2),
                             Spacer(),
                             Icon(Icons.access_time, size: 10),
                             Container(
@@ -154,7 +175,7 @@ class _NewsPageState extends State<NewsPage> {
                           child: Row(
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.4,
+                                width: MediaQuery.of(context).size.width * 0.35,
                                 decoration: BoxDecoration(
                                   color: Colors.blueAccent[200],
                                   borderRadius: BorderRadius.all(

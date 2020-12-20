@@ -5,7 +5,7 @@ class RSSState extends Equatable {
   String error;
   bool isLoading;
   bool isSuccess;
-  var data;
+  Map<String, RssFeed> data;
 
   RSSState({this.isLoading = false, this.isSuccess = false, this.error, this.data});
   RSSState.loading()
